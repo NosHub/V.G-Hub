@@ -85,10 +85,6 @@ if game.PlaceId ~= 5777228223 then
     )
 end
 Worlds = {}
-local Poop = require(ReplicatedStorage.Storage.Worlds.Worlds)
-for i, v in pairs(Poop) do
-    table.insert(Worlds, v.Name .. " " .. v.GameId)
-end
 
 function Invis()
     local Clone = Player.Character.LowerTorso.Root:Clone()
@@ -217,22 +213,6 @@ Players.PlayerAdded:Connect(
         end
     end
 )
-
-local OldNameCall
-OldNameCall =
-    hookmetamethod(
-    game,
-    "__newindex",
-    function(A, B, ...)
-        if not checkcaller() and (B == "WalkSpeed" or B == "JumpPower") then
-            return
-        end
-        return OldNameCall(A, B, ...)
-    end
-)
-
-
-
 
 healing = {}
 for i, v in pairs(ReplicatedStorage.Storage.Items.Items.Healing:GetChildren()) do
