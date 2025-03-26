@@ -1,0 +1,91 @@
+repeat wait() until game:IsLoaded()
+wait(3)
+
+local G = getgenv and getgenv() or _G or shared
+local Table = {
+    185655149,
+    606849621
+}
+if table.find(Table, game.PlaceId) then
+    wait(3)
+end
+
+G.Get =
+    setmetatable(
+    {},
+    {
+        __index = function(A, B)
+            return game:GetService(B)
+        end
+    }
+)
+for i,v in pairs(game.GetChildren(game)) do
+    G[v.ClassName] = v
+end 
+
+G.Player = Players.LocalPlayer
+G.wait = task.wait 
+G.spawn = task.spawn
+G.Heartbeat = RunService.Heartbeat
+G.Stepped = RunService.Stepped
+G.RenderStepped = RunService.RenderStepped
+G.Error = ScriptContext.Error
+G.MessageOut = LogService.MessageOut
+G.Kick = Player.Kick
+G.Idled = Player.Idled 
+
+local Name = game.PlaceId .. ".json"
+local Des = {}
+if makefolder and not isfile("V.G Hub") then
+    makefolder("V.G Hub")
+end 
+
+G.Settings = {}
+local Pcall = pcall(function()
+    if isfile("V.G Hub//" .. Name) then
+        readfile("V.G Hub//" .. Name)
+    else 
+        writefile("V.G Hub//" .. Name, HttpService:JSONEncode(Des))
+    end 
+end)
+
+if isfile("V.G Hub//" .. Name) and readfile("V.G Hub//" .. Name) then
+    Settings = HttpService:JSONDecode(readfile("V.G Hub//" .. Name))
+end 
+
+
+local Nos = {
+    "PreloadAsync",
+    "xpcall",
+    "gcinfo",
+    "collectgarbage",
+    "FindService",
+}
+
+local Yes = {
+    "Kick",
+    "kick",
+}
+
+local Disables = {
+    Error,
+    MessageOut,
+    Idled
+}
+
+ScriptContext:SetTimeout(0.5)
+
+G.GetFunction = function(A)
+    for i,v in pairs(getgc()) do
+        if type(v) == "function" and getinfo(v).name == tostring(A) then
+            A = v 
+        end 
+    end 
+    return A 
+end 
+
+G.Save = function()
+    pcall(function()
+        writefile("V.G Hub//" .. Name, HttpService:JSONEncode(Settings))
+    end)
+end 
